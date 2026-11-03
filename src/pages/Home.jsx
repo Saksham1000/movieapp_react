@@ -8,7 +8,7 @@ function Home() {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [initialLoad, setInitialLoad] = useState(true);
+  const [submittedQuery, setSubmittedQuery] = useState("");
 
   useEffect(() => {
     const loadPopularMovies = async () => {
@@ -23,10 +23,9 @@ function Home() {
         }
       } catch (err) {
         console.error('Error loading popular movies:', err);
-        setError("Failed to load movies. Please check your internet connection.");
+        setError(err.message || "Failed to load movies. Please check your internet connection.");
       } finally {
         setLoading(false);
-        setInitialLoad(false);
       }
     };
 
@@ -35,17 +34,17 @@ function Home() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return
     if (loading) return
 
     setLoading(true)
     try {
-        const searchResults = await searchMovies(searchQuery)
+        const query = searchQuery.trim()
+        const searchResults = query ? await searchMovies(query) : await getPopularMovies()
         setMovies(searchResults)
+        setSubmittedQuery(query)
         setError(null)
     } catch (err) {
-        console.log(err)
-        setError("Failed to search movies...")
+        setError(err.message || "Failed to search movies. Please try again.")
     } finally {
         setLoading(false)
     }
@@ -62,7 +61,7 @@ function Home() {
             <span className="search-icon">🔍</span>
             <input
               type="text"
-              placeholder="Search for movies, actors, genres..."
+              placeholder="Search for movies..."
               className="search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -84,7 +83,7 @@ function Home() {
 
         {!error && (
           <div className="section-header">
-            <h2>{searchQuery ? `Search Results for "${searchQuery}"` : "Popular Movies"}</h2>
+            <h2>{submittedQuery ? `Search Results for "${submittedQuery}"` : "Popular Movies"}</h2>
             <div className="results-count">{movies.length} movies found</div>
           </div>
         )}

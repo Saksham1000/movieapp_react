@@ -19,6 +19,7 @@ function MovieCard({movie}) {
     }
 
     function onCardKeyDown(e) {
+        if (e.target !== e.currentTarget) return
         if (e.key === "Enter" || e.key === " ") {
             e.preventDefault()
             openMovieDetails()
@@ -73,7 +74,10 @@ function MovieCard({movie}) {
                         </div>
                     )}
                     <div className="action-buttons">
-                        <button className="play-btn" title="Play Trailer" type="button">
+                        <button className="play-btn" title="Watch movie" type="button" onClick={(e) => {
+                            e.stopPropagation()
+                            navigate(`/movie/${movie.id}`, { state: { play: true } })
+                        }}>
                             ▶️ Play
                         </button>
                         <button className="info-btn" title="More Info" type="button">
