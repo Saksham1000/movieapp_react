@@ -13,3 +13,15 @@
   flex-direction: column;
   min-height: calc(100vh - 80px); /* Adjust based on navbar height */
 }
+
+.site-footer {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.site-footer a {
+  color: #64ffda;
+}
