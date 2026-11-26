@@ -12,7 +12,7 @@ A sleek and modern React application for discovering and managing your favorite 
 - **Custom Scrollbars** - Styled scrollbars with gradient colors
 
 ### 🎬 **Movie Features**
-- **Movie Search** - Search for movies by title, actors, or genres
+- **Movie Search** - Search for movies by title
 - **Popular Movies** - Discover trending and popular movies
 - **Detailed Movie Cards** - Display ratings, release dates, and overviews
 - **Favorites System** - Save and manage your favorite movies
@@ -71,12 +71,17 @@ A sleek and modern React application for discovering and managing your favorite 
    npm install
    ```
 
-3. **Start development server**
+3. **Configure TMDB**
+   Create `.env.local` in the project root with `VITE_TMDB_API_KEY=your_tmdb_api_key`.
+   Restart the development server after changing it. Vite includes this key in the
+   browser bundle, so it is visible to visitors; use a backend if it must remain secret.
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. **Open your browser**
+5. **Open your browser**
    Navigate to `http://localhost:5173`
 
 ### Build for Production

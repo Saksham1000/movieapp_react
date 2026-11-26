@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieDetails } from "../services/api";
 import { useMovieContext } from "../contexts/MovieContext";
@@ -6,10 +6,12 @@ import "../css/MovieDetails.css";
 
 function MovieDetails() {
   const { movieId } = useParams();
+  const location = useLocation();
   const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPlayer, setShowPlayer] = useState(Boolean(location.state?.play));
 
   useEffect(() => {
     const loadMovie = async () => {
@@ -101,6 +103,14 @@ function MovieDetails() {
               <p className="details-overview">{movie.overview || "No overview is available for this movie."}</p>
 
               <div className="details-actions">
+                {movie.imdb_id && (
+                  <button type="button" className="details-play-btn" onClick={() => {
+                    setShowPlayer(true);
+                    document.getElementById("movie-player")?.scrollIntoView({ behavior: "smooth" });
+                  }}>
+                    Watch movie
+                  </button>
+                )}
                 <button type="button" className="details-favorite-btn" onClick={onFavoriteClick}>
                   {favorite ? "Remove from favorites" : "Add to favorites"}
                 </button>
@@ -118,6 +128,24 @@ function MovieDetails() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section id="movie-player" className="details-section" aria-label="Movie player">
+        <h2>Watch movie</h2>
+        {!movie.imdb_id ? (
+          <p>Playback is unavailable because this movie has no IMDb ID.</p>
+        ) : showPlayer ? (
+          <div className="movie-player">
+            <iframe
+              src={`https://vidsrc.sh/embed/movie?imdb=${encodeURIComponent(movie.imdb_id)}`}
+              title={`Watch ${movie.title}`}
+              allow="fullscreen; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        ) : (
+          <p>Select Watch movie to load the player.</p>
+        )}
       </section>
 
       <section className="details-section">

@@ -18,6 +18,10 @@ function App() {
           <Route path="/movie/:movieId" element={<MovieDetails />} />
         </Routes>
       </main>
+      <footer className="site-footer">
+        <p>Movie information is provided by <a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">TMDB</a>. This app is not endorsed or certified by TMDB.</p>
+        <p>Video playback is provided by a third-party service.</p>
+      </footer>
     </MovieProvider>
   );
 }
